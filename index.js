@@ -22,7 +22,7 @@ app.use(express.static('build'))
   process.exit(1)
 }*/
 
-const password = "rab123";//ingresar password
+const password = "";//ingresar password
 
 const url =
   `mongodb+srv://iticrabagocruz:${password}@notes.qfgbnjf.mongodb.net/note-app?retryWrites=true&w=majority`
