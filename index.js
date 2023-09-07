@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
+const mongoose = require('mongoose')
 
 app.use(cors())
 
@@ -15,6 +16,26 @@ const requestLogger = (request, response, next) => {
 app.use(express.json())
 app.use(requestLogger)
 app.use(express.static('build'))
+
+/*if (process.argv.length < 3) {
+  console.log('Please provide the password as an argument')
+  process.exit(1)
+}*/
+
+const password = "";//ingresar password
+
+const url =
+  `mongodb+srv://iticrabagocruz:${password}@notes.qfgbnjf.mongodb.net/note-app?retryWrites=true&w=majority`
+
+mongoose.connect(url)
+
+const noteSchema = new mongoose.Schema({
+  content: String,
+  date: Date,
+  important: Boolean,
+})
+
+const Note = mongoose.model('Note', noteSchema)
 
 let notes = [
   {
@@ -49,7 +70,9 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/notes', (request, response) => {
-  response.json(notes)
+  Note.find({}).then(notes => {
+    response.json(notes)
+  })
 })
 
 app.get('/api/notes/:id', (request, response) => {
