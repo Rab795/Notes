@@ -22,7 +22,7 @@ app.use(express.static('build'))
   process.exit(1)
 }*/
 
-const password = "";//ingresar password
+const password = "rab123";//ingresar password
 
 const url =
   `mongodb+srv://iticrabagocruz:${password}@notes.qfgbnjf.mongodb.net/note-app?retryWrites=true&w=majority`
@@ -36,6 +36,14 @@ const noteSchema = new mongoose.Schema({
 })
 
 const Note = mongoose.model('Note', noteSchema)
+
+noteSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
+})
 
 let notes = [
   {
